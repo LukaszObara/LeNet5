@@ -5,10 +5,7 @@
 # os.environ['THEANO_FLAGS'] = "device=gpu0" 
 
 # Third Party Libraries
-import matplotlib.cm as cm
-import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
 from sklearn.model_selection import train_test_split
 import theano
 import theano.tensor as T
@@ -344,7 +341,7 @@ conv_layer2 = ConvLayer(input=pool_layer1.output,
 pool_layer2 = PoolingLayer(input=conv_layer2.output,
 						   activation_fn=act_f)
 
-# outputs from convolution network need to be flattend before being 
+# outputs from convolution network needs to be flattend before being 
 # passed through to the the fully-connected layer
 fc_layer_input = pool_layer2.output.flatten(2) 
 
@@ -359,11 +356,6 @@ fc_layer2 = FC(input=fc_layer1.output,
 				n_in=512,
 				n_out=10,
 				activation_fn=act_f)
-# fc_layer3 = FC(input=fc_layer2.output,
-# 			   n_in=256,
-# 			   n_out=10,
-# 			   activation_fn=act_f)
-
 
 # with full batch normalization
 # params = fc_layer2.params + bn_layer3.params + fc_layer1.params\
@@ -442,54 +434,6 @@ grads = T.grad(cost, params)
 
 # 	return updates
 
-# def nag(l_rate, momentum=0.9, anneal_rate=1e-2, parameters=None, grads=None):
-# 	"""
-# 	Momentum update
-
-# 	Parameters
-# 	----------
-# 	:type l_rate: theano.tensor.scalar
-# 	:param l_rate: Initial learning rate
-
-# 	:type momentum: float32
-# 	:params momentum: 
-
-# 	:type anneal_rate: float32
-# 	:param anneal_rate: 
-	
-# 	:type parameters: theano.shared
-# 	:params parameters: Model parameters to update
-
-# 	:type grads: Theano variable
-# 	:params grads: Gradients of cost w.r.t to parameters
-
-# 	:type noise: bool
-# 	:params noise: 
-# 	"""
-# 	t = theano.shared(name='time_step', value=np.int16(0))
-
-# 	def update_rule(param, velocity, df):
-# 		v_prev = velocity
-# 		v = momentum * velocity - l_rate * T.exp(-anneal_rate*t) * df
-# 		x = momentum * v_prev + (1-momentum) * v
-# 		updates = (param, param+x), (velocity, v)
-
-# 		return updates
-	
-# 	velocities = [theano.shared(name='v_%s' % param,
-# 								value=param.get_value() * 0., 
-# 								broadcastable=param.broadcastable) 
-# 				  for param in parameters]
-
-# 	updates = []
-# 	for p, v, g in zip(parameters, velocities, grads):
-# 		param_updates, vel_updates = update_rule(p, v, g)
-# 		updates.append(param_updates)
-# 		updates.append(vel_updates)
-# 	updates.append((t, t+1))
-
-# 	return updates
-
 def rmsprop(l_rate, d_rate=0.9, epsilon=1e-6, parameters=None, grads=None):
 	"""
 	Momentum update
@@ -530,42 +474,6 @@ def rmsprop(l_rate, d_rate=0.9, epsilon=1e-6, parameters=None, grads=None):
 		updates.append(cache_updates)
 
 	return updates
-
-# def adam(l_rate, beta1=0.9, beta2=0.999, epsilon=1e-6, parameters=None, 
-# 		 grads=None):
-
-# 	one = T.constant(1.0)
-# 	t = theano.shared(name='iteration', value=np.float32(1.0))
-
-# 	def update_rule(param, moment, velocity, df):
-# 		m_t = beta1 * moment + (one-beta1) * df
-# 		v_t = beta2 * velocity + (one-beta2) * df**2
-# 		m_hat = m_t/(one-beta1**(t))
-# 		v_hat = v_t/(one-beta2**(t))
-# 		x = (l_rate * m_hat / (T.sqrt(v_hat) + epsilon))
-# 		updates = (param, param-x), (moment, m_t), (velocity, v_t)
-
-# 		return updates
-	
-# 	moments = [theano.shared(name='m_%s' % param,
-# 							 value=param.get_value() * 0., 
-# 							 broadcastable=param.broadcastable) 
-# 			   for param in parameters]
-
-# 	velocities = [theano.shared(name='v_%s' % param,
-# 								value=param.get_value() * 0., 
-# 								broadcastable=param.broadcastable) 
-# 				  for param in parameters]
-
-# 	updates = []
-# 	for p, m, v, g in zip(params, moments, velocities, grads):
-# 		p_update, m_update, v_update = update_rule(p, m, v, g)
-# 		updates.append(p_update)
-# 		updates.append(m_update)
-# 		updates.append(v_update)
-# 	updates.append((t, t+1))
-
-# 	return updates
 
 # theano functions for training and validation 
 train = theano.function(inputs=[X, Y, lr], outputs=cost, 
@@ -645,16 +553,9 @@ def train_model(training_data, validation_data, test_data=None,
 
 if __name__ == '__main__':
 
-	location = 'C:\\Users\\lukas\\OneDrive\\Documents\\Machine Learning'+\
-				'\\Kaggle\\MNIST\\augmented_train.npy'
-	location_test = 'C:\\Users\\lukas\\OneDrive\\Documents\\Machine Learning'+\
-					'\\Kaggle\\MNIST\\test_padded.npy'
-	# loc_save_train = 'C:\\Users\\lukas\\OneDrive\\Documents\\Machine Learning'+\
-	# 				 '\\Kaggle\\MNIST\\Results\\train_results_relu_1632.npy'
-	# loc_save_accu = 'C:\\Users\\lukas\\OneDrive\\Documents\\Machine Learning'+\
-	# 				 '\\Kaggle\\MNIST\\Results\\accu_results_relu_1632.npy'
-	loc_submission = 'C:\\Users\\lukas\\OneDrive\\Documents\\Machine Learning'+\
-					 '\\Kaggle\\MNIST\\Results\\submission.csv'
+	location = 'C:\\...\\MNIST\\augmented_train.npy'
+	location_test = 'C:\\...\\MNIST\\test_padded.npy'
+# 	loc_submission = 'C:\\...\\MNIST\\Results\\submission.csv'
 	data = np.load(location)
 	data_train, data_val = train_test_split(data, test_size=12800, 
 											random_state=23)	
@@ -663,8 +564,8 @@ if __name__ == '__main__':
 	t_data, a_data, label = train_model(data_train, data_val, test_val,
 										learning_rate=1e-4, epochs=80)
 
-	image_id = np.arange(1, 28001)
-	label = label[:28000].astype(np.int8)
-	results = {'ImageId': image_id, 'label': label}
-	df = pd.DataFrame(results)
-	df.to_csv(loc_submission, index=False)
+# 	image_id = np.arange(1, 28001)
+# 	label = label[:28000].astype(np.int8)
+# 	results = {'ImageId': image_id, 'label': label}
+# 	df = pd.DataFrame(results)
+# 	df.to_csv(loc_submission, index=False)
