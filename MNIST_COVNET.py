@@ -250,11 +250,9 @@ class FC(object):
 	"""
 	Typical hidden layer of a MLP: units are fully-connected and have
 	sigmoidal activation function. Weight matrix W is of shape (n_in,n_out)
-	and the bias vector b is of shape (n_out,).
+	and the bias vector b is of shape (n_out,)
 
-	NOTE : The nonlinearity used here is tanh
-
-	Hidden unit activation is given by: tanh(dot(W, input.T) + b)
+	Hidden unit activation is given by: activation_fn(dot(W, input.T) + b)
 
 	Parameters
 	----------
@@ -560,7 +558,6 @@ if __name__ == '__main__':
 
 	location = 'C:\\...\\MNIST\\augmented_train.npy'
 	location_test = 'C:\\...\\MNIST\\test_padded.npy'
-# 	loc_submission = 'C:\\...\\MNIST\\Results\\submission.csv'
 	data = np.load(location)
 	data_train, data_val = train_test_split(data, test_size=12800, 
 											random_state=23)	
@@ -568,9 +565,3 @@ if __name__ == '__main__':
 
 	t_data, a_data, label = train_model(data_train, data_val, test_val,
 										learning_rate=1e-4, epochs=80)
-
-# 	image_id = np.arange(1, 28001)
-# 	label = label[:28000].astype(np.int8)
-# 	results = {'ImageId': image_id, 'label': label}
-# 	df = pd.DataFrame(results)
-# 	df.to_csv(loc_submission, index=False)
