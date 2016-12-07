@@ -53,6 +53,11 @@ def l2_reg(x, lmbd=0.05):
 
 	Parameters
 	----------
+	:type x: theano.tensor.dtensor4
+	:param x: symbolic tensor of weights to be summed
+	
+	:type lmbd: float32
+	:param input: 
 
 	returns
 	----------
