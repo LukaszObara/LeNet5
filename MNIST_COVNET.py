@@ -510,6 +510,8 @@ def train_model(training_data, validation_data, test_data=None,
 
 		mini_batches = [training_data[k: k+batch_size]
 						for k in range(0, total_values, batch_size)] 
+		validation_batches = [validation_data[m: m+batch_size]
+							  for m in range(0, total_val_values, batch_size)]
 
 		training_cost, accuracy = 0, 0
 		training_cost_list, accuracy_list = [], []
@@ -526,15 +528,26 @@ def train_model(training_data, validation_data, test_data=None,
 			digits = digits.reshape(-1, 1, 28, 28)
 			cost_ij = train(digits, label_matrix, learning_rate)
 			training_cost += cost_ij
+
+		for val_batch in validation_batches:
+			labels = mini_batch[:, 0]
+			label_matrix = np.zeros(shape=(256, 10), dtype=theano.config.floatX)
+			
+			for i, label in enumerate(labels):
+				vec = scalar_to_vec(int(label), 10)
+				label_matrix[i] = vec
+
+			digits = mini_batch[:, 1:]/255
+			digits = digits.reshape(-1, 1, 28, 28)
 			accuracy += accu(digits, labels)
 
-		training_cost_list.append(training_cost/len(mini_batch))
-		accuracy_list.append(accuracy/total_values)
+		training_cost_list.append(training_cost/total_values)
+		accuracy_list.append(accuracy/total_val_values)
 		
-		print('The accuracy is: {}'.format(accuracy/total_values))
-		print('The loss is: {}'.format(training_cost/len(mini_batch)))
+		print('The accuracy is: {}'.format(accuracy/total_val_values))
+		print('The loss is: {}'.format(training_cost/total_values))
 		print('--------------------------')
-
+		
 	if np.any(test_data):
 		print('===================================')
 		print('Using test data to predict results')
