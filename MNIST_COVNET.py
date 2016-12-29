@@ -329,18 +329,12 @@ conv_layer1 = ConvLayer(input=X,
 						filter_shape=(nkerns[0], 1, 3, 3), 
 						image_shape=(batch_size, 1, 28, 28),
 						activation_fn=None)
-# bn_layer1 = BatchNormLayer(input=conv_layer1.output,
-# 						   shape=(batch_size, nkerns[0], 26, 26),
-# 						   activation_fn=None)
 pool_layer1 = PoolingLayer(input=conv_layer1.output,
 						   activation_fn=act_f)
 conv_layer2 = ConvLayer(input=pool_layer1.output,
 						filter_shape=(nkerns[1], nkerns[0], 5, 5), 
 						image_shape=(batch_size, nkerns[0], 13, 13),
 						activation_fn=None)
-# bn_layer2 = BatchNormLayer(input=conv_layer2.output,
-# 						   shape=(batch_size, nkerns[1], 11, 11),
-# 						   activation_fn=None)
 pool_layer2 = PoolingLayer(input=conv_layer2.output,
 						   activation_fn=act_f)
 
@@ -352,20 +346,11 @@ fc_layer1 = FC(input=fc_layer_input,
 				n_in=nkerns[1] * 4 * 4,
 				n_out=512,
 				activation_fn=act_f)
-# bn_layer3 = BatchNormLayer(input=fc_layer1.output,
-# 						   shape=(batch_size, 64),
-# 						   activation_fn=act_f)
 fc_layer2 = FC(input=fc_layer1.output,
 				n_in=512,
 				n_out=10,
 				activation_fn=act_f)
 
-# with full batch normalization
-# params = fc_layer2.params + bn_layer3.params + fc_layer1.params\
-# 	   + bn_layer2.params + conv_layer2.params + bn_layer1.params\
-# 	   + conv_layer1.params
-
-# without batch normalization
 params = fc_layer2.params + fc_layer1.params\
 	   + conv_layer2.params + conv_layer1.params
 
@@ -565,7 +550,6 @@ def train_model(training_data, validation_data, test_data=None,
 		print('Done')
 
 	return training_cost_list, accuracy_list, predicted_results
-
 
 if __name__ == '__main__':
 
