@@ -10,4 +10,4 @@ We show how to implement various forms of gradient descent and show how to defin
 The full describtion can be found in the ipython notebook located in the `Notebook` directory.
 
 # References
-LeCun Yann et al., Gradient-Based Learning Applied to Document Recognition, <u>PROC. OF THE IEEE.</u>, Nov 1998
+LeCun Yann et al., Gradient-Based Learning Applied to Document Recognition, *PROC. OF THE IEEE.*, Nov 1998
