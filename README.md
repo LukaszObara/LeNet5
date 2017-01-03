@@ -10,4 +10,7 @@ We show how to implement various forms of gradient descent and show how to defin
 The full describtion can be found in the ipython notebook located in the `Notebook` directory.
 
 # References
+Bengio Yoshua, Glorat Xavier, Understanding the difficulty of training deep feedforward neural networks, #AISTATS#, pages 249–256, 2010
+Clevert Djork-Arne, Unterthiner Thomas, Hochreiter Sepp, Fast And Accurate Deep Network Learning by Exponential Linear Units (ELU), *ICLR* 2016, https://arxiv.org/abs/1511.07289
+He Kaiming et al. Delving Deep into Rectifiers: Surpassing Human-Level Performance on ImageNet Classification, #ICCV# 2015, pp. 1026-1034
 LeCun Yann et al., Gradient-Based Learning Applied to Document Recognition, *PROC. OF THE IEEE.*, Nov 1998
