@@ -11,9 +11,9 @@ The full describtion can be found in the ipython notebook located in the `Notebo
 
 # References
 <ol>
-<li>Bengio Yoshua, Glorat Xavier, Understanding the difficulty of training deep feedforward neural networks, #AISTATS#, pages 249–256, 2010</li>
-<li>Clevert Djork-Arne, Unterthiner Thomas, Hochreiter Sepp, Fast And Accurate Deep Network Learning by Exponential Linear Units (ELU), *ICLR* 2016, https://arxiv.org/abs/1511.07289</li>
-<li>Goodfellow Ian, Bengio Yoshua, Courville Aaron, Deep Learning, *MIT Press*, 2016, http://www.deeplearningbook.org</li>
-<li>He Kaiming et al. Delving Deep into Rectifiers: Surpassing Human-Level Performance on ImageNet Classification, *ICCV* 2015, pp. 1026-1034</li>
-<li>LeCun Yann et al., Gradient-Based Learning Applied to Document Recognition, *PROC. OF THE IEEE.*, Nov 1998</li>
+<li>Bengio Yoshua, Glorat Xavier, Understanding the difficulty of training deep feedforward neural networks, <u>AISTATS</u>, pages 249–256, 2010</li>
+<li>Clevert Djork-Arne, Unterthiner Thomas, Hochreiter Sepp, Fast And Accurate Deep Network Learning by Exponential Linear Units (ELU), <u>ICLR</u> 2016, https://arxiv.org/abs/1511.07289</li>
+<li>Goodfellow Ian, Bengio Yoshua, Courville Aaron, Deep Learning, <u>MIT Press</u>, 2016, http://www.deeplearningbook.org</li>
+<li>He Kaiming et al. Delving Deep into Rectifiers: Surpassing Human-Level Performance on ImageNet Classification, <u>ICCV</u>, 2015, pp. 1026-1034</li>
+<li>LeCun Yann et al., Gradient-Based Learning Applied to Document Recognition, <u>PROC. OF THE IEEE.</u>, Nov 1998</li>
 </ol>
