@@ -1,5 +1,5 @@
 # LeNet5
-We describe the components and how to built a convolution neural network (CNN) similar to that described in <em>Gradient Based Learning Applied to Document Recognition</em> by LeCunn et al.. We built all the necessary layers/components  using `Theano` and test various gradient descent methods on the MNIST dataset.
+We describe the components and how to built a convolution neural network (CNN) similar to that described in <em>Gradient Based Learning Applied to Document Recognition</em> by LeCunn et al.. All the necessary layers/components  are built using `Theano`. In addition, a number gradient descent methods are tested on the MNIST dataset.
 
 The network will consist of a series of convolution layers, pooling layers and a fully connected layer and can be visualized by the following diagram 
 
