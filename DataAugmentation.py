@@ -62,3 +62,30 @@ def augment(data: np.array, size: int) -> np.array:
 		augmented_data[i] = aug
 
 	return augmented_data
+
+def scalar_to_vec(labels_dense, num_classes):
+	"""
+	Converts the dense label into a sparse vector. 
+	Parameters
+	----------
+	:type labels_dense: int8 
+	:param labels_dense: dense label
+	:type num_classes: int8
+	:param num_classes: number of classes
+	Returns
+	-------
+	<class 'numpy.ndarray'>
+		A numpy array of length `num_classes` of zeros except for a 1 in 
+		the position of `labels_dense`. 
+	Examples
+	--------
+	>>> scalar_to_vec(4, 10)
+	[ 0.  0.  0.  0.  1.  0.  0.  0.  0.  0.]
+	"""
+	assert type(labels_dense) == int
+	assert type(num_classes) == int
+
+	vec = np.zeros(num_classes)
+	vec[labels_dense] = 1
+
+	return vec
