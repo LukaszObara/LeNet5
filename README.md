@@ -17,3 +17,8 @@ A full describtion can be found in the ipython notebook located in the ipython n
 <li>He Kaiming et al., <em>Delving Deep into Rectifiers: Surpassing Human-Level Performance on ImageNet Classification</em>, ICCV, 2015, pp. 1026-1034</li>
 <li>LeCun Yann et al., <em>Gradient-Based Learning Applied to Document Recognition</em>, PROC. OF THE IEEE., Nov 1998</li>
 </ol>
+
+
+### TODO:
+Fix fix + add gradient descent algorithms
+Rewrite LeNet5 code in a more modular fashion
