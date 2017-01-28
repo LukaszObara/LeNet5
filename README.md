@@ -20,5 +20,4 @@ A full describtion can be found in the ipython notebook located in the ipython n
 
 
 ### TODO:
-Fix fix + add gradient descent algorithms<br>
 Rewrite LeNet5 code in a more modular fashion
