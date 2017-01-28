@@ -54,7 +54,7 @@ def momentum(l_rate, parameters, grads, momentum=0.9):
 
 		return updates
 
-	assert momentum <=1 and momentum >= 0
+	assert momentum <=1. and momentum >= 0.
 	
 	velocities = [theano.shared(name='v_{}'.format(param),
 								value=param.get_value() * 0., 
@@ -71,7 +71,7 @@ def momentum(l_rate, parameters, grads, momentum=0.9):
 
 def nag(l_rate, momentum=0.9, anneal_rate=1e-2, parameters=None, grads=None):
 	"""
-	Momentum update
+	Nesterov momentum update
 
 	Parameters
 	----------
@@ -89,16 +89,14 @@ def nag(l_rate, momentum=0.9, anneal_rate=1e-2, parameters=None, grads=None):
 
 	:type grads: Theano variable
 	:params grads: Gradients of cost w.r.t to parameters
-
-	:type noise: bool
-	:params noise: 
 	"""
+
 	t = theano.shared(name='time_step', value=np.int16(0))
 
 	def update_rule(param, velocity, df):
 		v_prev = velocity
 		v = momentum * velocity - l_rate * T.exp(-anneal_rate*t) * df
-		x = momentum * v_prev + (1-momentum) * v
+		x = momentum * v_prev + (1.-momentum) * v
 		updates = (param, param+x), (velocity, v)
 
 		return updates
@@ -119,24 +117,27 @@ def nag(l_rate, momentum=0.9, anneal_rate=1e-2, parameters=None, grads=None):
 
 def rmsprop(l_rate, d_rate=0.9, epsilon=1e-6, parameters=None, grads=None):
 	"""
-	Momentum update
+	RMSProp update
 
 	Parameters
 	----------
 	:type lr: theano.tensor.scalar
 	:param lr: Initial learning rate
+
+	:type dr: float32
+	:param dr: Decay rate
+
+	:type epsilon: float32
+	:param epsilon: 
 	
 	:type parameters: theano.shared
 	:params parameters: Model parameters to update
 
 	:type grads: Theano variable
 	:params grads: Gradients of cost w.r.t to parameters
-
-	:type momentum: float32
-	:params momentum: 
 	"""
 
-	one = T.constant(1.0)
+	one = T.constant(1.)
 
 	def update_rule(param, cache, df):
 		cache_val = d_rate * cache + (one-d_rate) * df**2
@@ -160,21 +161,21 @@ def rmsprop(l_rate, d_rate=0.9, epsilon=1e-6, parameters=None, grads=None):
 
 def adagrad(l_rate, epsilon=1e-6, parameters=None, grads=None):
 	"""
-	Momentum update
+	AdaGrad update
 
 	Parameters
 	----------
 	:type lr: theano.tensor.scalar
 	:param lr: Initial learning rate
+
+	:type epsilon: float32
+	:param epsilon: 
 	
 	:type parameters: theano.shared
 	:params parameters: Model parameters to update
 
 	:type grads: Theano variable
 	:params grads: Gradients of cost w.r.t to parameters
-
-	:type momentum: float32
-	:params momentum: 
 	"""
 
 	def update_rule(param, cache, df):
@@ -201,8 +202,8 @@ def adagrad(l_rate, epsilon=1e-6, parameters=None, grads=None):
 def adam(l_rate, beta1=0.9, beta2=0.999, epsilon=1e-6, parameters=None, 
 		 grads=None):
 
-	one = T.constant(1.0)
-	t = theano.shared(name='iteration', value=np.float32(1.0))
+	one = T.constant(1.)
+	t = theano.shared(name='iteration', value=np.float32(1.))
 
 	def update_rule(param, moment, velocity, df):
 		m_t = beta1 * moment + (one-beta1) * df
@@ -237,13 +238,13 @@ def adam(l_rate, beta1=0.9, beta2=0.999, epsilon=1e-6, parameters=None,
 def adamax(l_rate, beta1=0.9, beta2=0.999, epsilon=1e-6, parameters=None, 
 		   grads=None):
 
-	one = T.constant(1.0)
-	t = theano.shared(name='iteration', value=np.float32(1.0))
+	one = T.constant(1.)
+	t = theano.shared(name='iteration', value=np.float32(1.))
 
 	def update_rule(param, moment, u, df):
 		m_t = beta1 * moment + (one-beta1) * df
 		u_t = T.maximum(beta2*u, T.abs_(df))
-		x = (lr/(1-beta1**t)) * (m_t/u_t) 
+		x = (lr/(1.-beta1**t)) * (m_t/u_t) 
 		updates = (param, param-x), (moment, m_t), (u, u_t)
 		return updates
 	
