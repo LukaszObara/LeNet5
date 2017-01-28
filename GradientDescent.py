@@ -1,7 +1,6 @@
 # GradientDescent.py
-# TODO: Fix ADAM
-# TODO: Add AdaGrad
 
+# Libraries 
 # Third-Party Libraries
 import numpy as np
 import theano
@@ -147,8 +146,8 @@ def rmsprop(l_rate, d_rate=0.9, epsilon=1e-6, parameters=None, grads=None):
 		return updates
 	
 	caches = [theano.shared(name='c_{}'.format(param),
-								value=param.get_value() * 0., 
-								broadcastable=param.broadcastable) 
+							value=param.get_value() * 0., 
+							broadcastable=param.broadcastable) 
 			  for param in parameters]
 
 	updates = []
@@ -158,6 +157,46 @@ def rmsprop(l_rate, d_rate=0.9, epsilon=1e-6, parameters=None, grads=None):
 		updates.append(cache_updates)
 
 	return updates
+
+def adagrad(l_rate, epsilon=1e-6, parameters=None, grads=None):
+	"""
+	Momentum update
+
+	Parameters
+	----------
+	:type lr: theano.tensor.scalar
+	:param lr: Initial learning rate
+	
+	:type parameters: theano.shared
+	:params parameters: Model parameters to update
+
+	:type grads: Theano variable
+	:params grads: Gradients of cost w.r.t to parameters
+
+	:type momentum: float32
+	:params momentum: 
+	"""
+
+	def update_rule(param, cache, df):
+		cache_val = df**2
+		x = l_rate * df / (T.sqrt(cache_val) + eps)
+		updates = (param, param-x), (cache, cache+cache_val)
+
+		return updates
+	
+	caches = [theano.shared(name='c_{}'.format(param),
+							value=param.get_value() * 0., 
+							broadcastable=param.broadcastable) 
+			  for param in parameters]
+
+	updates = []
+	for p, c, g in zip(parameters, caches, grads):
+		param_updates, cache_updates = update_rule(p, c, g)
+		updates.append(param_updates)
+		updates.append(cache_updates)
+
+	return updates
+
 
 def adam(l_rate, beta1=0.9, beta2=0.999, epsilon=1e-6, parameters=None, 
 		 grads=None):
@@ -195,28 +234,35 @@ def adam(l_rate, beta1=0.9, beta2=0.999, epsilon=1e-6, parameters=None,
 
 	return updates
 
-# def adamax(l_rate, beta1=0.9, beta2=0.999, epsilon=1e-6, parameters=None, 
-# 		   grads=None):
+def adamax(l_rate, beta1=0.9, beta2=0.999, epsilon=1e-6, parameters=None, 
+		   grads=None):
 
-# 	def update_rule(param, moment, u, df):
-# 		m_t = beta1 * moment + (one-beta1) * df
-# 		u_t = T.maximum(beta2*u, T.abs_(df))
-# 		x = (lr/(1-beta1**t)) * (m_t/u_t) 
-# 		updates = (param, param-x), (moment, m_t), (u, u_t)
+	one = T.constant(1.0)
+	t = theano.shared(name='iteration', value=np.float32(1.0))
 
-# 		return updates
+	def update_rule(param, moment, u, df):
+		m_t = beta1 * moment + (one-beta1) * df
+		u_t = T.maximum(beta2*u, T.abs_(df))
+		x = (lr/(1-beta1**t)) * (m_t/u_t) 
+		updates = (param, param-x), (moment, m_t), (u, u_t)
+		return updates
+	
+	moments = [theano.shared(name='m_{}'.format(param),
+							 value=param.get_value() * 0., 
+							 broadcastable=param.broadcastable) 
+			   for param in parameters]
 
-# 	moments = [theano.shared(name='m_{}'.format(param),
-# 							 value=param.get_value() * 0., 
-# 							 broadcastable=param.broadcastable) 
-# 			   for param in parameters]
+	upd = [theano.shared(name='u_{}'.format(param),
+						 value=param.get_value() * 0., 
+						 broadcastable=param.broadcastable) 
+				for param in parameters]
 
-# 	updates = []
-# 	for p, m, u, g in zip(params, moments, upd, gradients):
-# 		p_update, m_update, u_update = update_rule(p, m, u, g)
-# 		updates.append(p_update)
-# 		updates.append(m_update)
-# 		updates.append(u_update)
-# 	updates.append((t, t+1))
+	updates = []
+	for p, m, u, g in zip(params, moments, upd, grads):
+		p_update, m_update, u_update = update_rule(p, m, u, g)
+		updates.append(p_update)
+		updates.append(m_update)
+		updates.append(u_update)
+	updates.append((t, t+1))
 
-# 	return updates
+	return updates
